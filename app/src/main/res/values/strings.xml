@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Groceries Plus</string>
+    <string name="app_display_name">Groceries+</string>
+
+    <string name="itemNameText">Grocery Item</string>
+    <string name="moreButtonText">More</string>
+    <string name="expireText">Expire by:</string>
+    <string name="restockText">Restock by:</string>
+    <string name="itemAmount">Quantity: </string>
+
+    <string name="listNameText">List Name</string>
+    <string name="dueDateText">Do by:</string>
+
+    <string name="activeListText">Active</string>
+    <string name="historyTabText">History</string>
+
+    <string name="addButtonText">Add</string>
+
+    <string name="dateFillText">DD/MM/YYYY</string>
+    <string name="numberFillText">##</string>
+</resources>

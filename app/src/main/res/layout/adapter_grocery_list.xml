@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout6"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:padding="5dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
+
+    <ImageButton
+        android:id="@+id/deleteListButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:color/transparent"
+
+        app:layout_constraintBottom_toBottomOf="@+id/listNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <TextView
+        android:id="@+id/listNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/listNameText"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/dueDateTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/dueDateText"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dueDateTextView"
+        app:layout_constraintStart_toStartOf="@+id/listNameTextView"
+        app:layout_constraintTop_toTopOf="@+id/dueDateTextView" />
+
+    <TextView
+        android:id="@+id/dueDateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+
+        android:background="@android:color/transparent"
+        android:text="@string/dateFillText"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textView5"
+        app:layout_constraintTop_toBottomOf="@id/listNameTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
