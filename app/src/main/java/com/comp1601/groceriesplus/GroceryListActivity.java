@@ -106,12 +106,6 @@ public class GroceryListActivity extends AppCompatActivity {
 
         gList.addItem(newGroceryItem);
 
-        //mItemAdapter.notifyDataSetChanged();
-
-        //mItemAdapter.notifyItemInserted(0);
-        //mItemAdapter.notifyItemInserted(gList.getTotalItemCount());
-        //mRecyclerView.scrollToPosition(0);
-
         mItemAdapter.notifyDataSetChanged();
     }
 
