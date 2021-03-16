@@ -26,18 +26,18 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <EditText
         android:id="@+id/listNameEditText"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:background="@android:color/transparent"
         android:hint="@string/listNameText"
         android:inputType="textPersonName"
-
-        android:textSize="30sp"
+        android:padding="0dp"
+        android:textSize="@dimen/activity_list_name_size"
         app:layout_constraintEnd_toEndOf="@id/dueDateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
 
         android:text="@string/dueDateText"
-        android:textSize="18sp"
+        android:textSize="@dimen/activity_list_other_size"
         app:layout_constraintBottom_toBottomOf="@+id/dueDateTextView"
         app:layout_constraintStart_toStartOf="@+id/listNameEditText"
         app:layout_constraintTop_toTopOf="@+id/dueDateTextView" />
@@ -63,7 +63,7 @@
         android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         android:hint="@string/dateFillText"
-        android:textSize="18sp"
+        android:textSize="@dimen/activity_list_other_size"
         app:layout_constraintBottom_toTopOf="@+id/itemRecyclerView"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/listNameEditText" />
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/activeListText"
-        android:textSize="18sp"
+        android:textSize="@dimen/activity_list_other_size"
         app:layout_constraintBottom_toBottomOf="@+id/listNameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/listNameEditText" />

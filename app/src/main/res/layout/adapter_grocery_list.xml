@@ -19,7 +19,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/listNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@drawable/ic_baseline_clear_24" />
 
     <TextView
         android:id="@+id/listNameTextView"
@@ -27,10 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
 
-        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:text="@string/listNameText"
-        android:textSize="24sp"
+        android:textSize="@dimen/adapter_list_name_size"
         app:layout_constraintBottom_toTopOf="@id/dueDateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +40,7 @@
         android:layout_height="wrap_content"
 
         android:text="@string/dueDateText"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_list_other_size"
         app:layout_constraintBottom_toBottomOf="@+id/dueDateTextView"
         app:layout_constraintStart_toStartOf="@+id/listNameTextView"
         app:layout_constraintTop_toTopOf="@+id/dueDateTextView" />
@@ -54,7 +53,7 @@
 
         android:background="@android:color/transparent"
         android:text="@string/dateFillText"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_list_other_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/textView5"
         app:layout_constraintTop_toBottomOf="@id/listNameTextView" />

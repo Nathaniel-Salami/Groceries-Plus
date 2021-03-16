@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -47,12 +50,27 @@ public class MainActivity extends AppCompatActivity {
     private void loadRecyclerView() {
         model.setGListArrayList(db.selectAllGroceryList());
 
-        //sort grocery lists https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
-        //model.getGListArrayList().sort(Comparator.comparing(GroceryList::getCreatedDate).reversed());
-
         mGLAdapter = new GroceryListAdapter(this, model);
         mRecyclerView.setAdapter(mGLAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.settings_button) {
+            Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     //THIS IS MESSY, FIX THIS
@@ -76,11 +94,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(ToolBox.LIST_EXTRA, model.getGroceryList(0));
 
         startActivity(intent);
-
-        //mGLAdapter.notifyDataSetChanged();
-        //mGLAdapter.notifyItemInserted(0);
-        //mRecyclerView.scrollToPosition(0);
-        //mGLAdapter.notifyDataSetChanged();
     }
 
     @Override

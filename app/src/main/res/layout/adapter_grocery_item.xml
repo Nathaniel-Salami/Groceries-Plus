@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
+    android:minHeight="@dimen/adapter_item_other_size"
     android:padding="5dp"
     android:paddingStart="15dp"
     android:paddingEnd="15dp">
@@ -18,7 +19,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@drawable/ic_baseline_clear_24" />
 
     <EditText
         android:id="@+id/itemNameEditText"
@@ -26,12 +27,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
 
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="5dp"
         android:background="@android:color/transparent"
         android:hint="@string/itemNameText"
         android:inputType="textAutoComplete"
-        android:textSize="24sp"
+        android:textSize="@dimen/adapter_item_name_size"
         app:layout_constraintBottom_toTopOf="@id/dueDateTextView"
         app:layout_constraintStart_toEndOf="@id/foundCheckBox"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,12 +41,10 @@
         android:id="@+id/itemQuantityEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:hint="@string/numberFillText"
         android:inputType="number"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/restockDateEditText"
         app:layout_constraintStart_toStartOf="@+id/restockDateEditText"
@@ -57,7 +56,6 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
 
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,10 +63,9 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="16dp"
         android:text="@string/expireText"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toBottomOf="@+id/dueDateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dueDateTextView" />
@@ -78,11 +75,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:background="@android:color/transparent"
         android:hint="@string/dateFillText"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toTopOf="@id/restockDateEditText"
         app:layout_constraintStart_toEndOf="@id/textView5"
         app:layout_constraintTop_toBottomOf="@id/itemNameEditText" />
@@ -91,9 +87,8 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="@string/restockText"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toBottomOf="@+id/restockDateEditText"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/restockDateEditText" />
@@ -102,11 +97,10 @@
         android:id="@+id/restockDateEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-
+        android:layout_marginBottom="4dp"
         android:background="@android:color/transparent"
         android:hint="@string/dateFillText"
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toTopOf="@id/itemQuantityEditText"
         app:layout_constraintStart_toStartOf="@+id/dueDateTextView"
         app:layout_constraintTop_toBottomOf="@id/dueDateTextView" />
@@ -117,8 +111,7 @@
         android:layout_height="wrap_content"
 
         android:text="@string/itemAmount"
-
-        android:textSize="14sp"
+        android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toBottomOf="@+id/itemQuantityEditText"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/itemQuantityEditText" />
