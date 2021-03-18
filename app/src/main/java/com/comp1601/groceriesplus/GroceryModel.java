@@ -70,7 +70,6 @@ public class GroceryModel implements Serializable {
 
                 //add items that will expire in GITEM_LIMIT to new list
                 if (gi.needRestock() || gi.isExpired() || !gi.isFound()) {
-                //if (gi.needRestock() || gi.isExpired()) {
                     //reset item and add to list
                     gi.reset();
                     genrated.add(gi);
