@@ -24,24 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton mAddListButton;
 
-    //for swipe to delete in recycler view
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            //Toast.makeText(ListActivity.this, "on Move", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Toast.makeText(ListActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
-            //Remove swiped item from list and notify the RecyclerView
-            int position = viewHolder.getAdapterPosition();
-            handleRemoveGList(position);
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         //launch recycler view
         loadRecyclerView();
-        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         // handlers
         mAddListButton.setOnClickListener(view -> {
@@ -118,26 +99,7 @@ public class MainActivity extends AppCompatActivity {
         //grab model and launch recycler view
         model.setGListArrayList(db.selectAllGroceryList());
         loadRecyclerView();
-        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         mGLAdapter.notifyDataSetChanged();
-    }
-
-    //setting button
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.settings_button) {
-            Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

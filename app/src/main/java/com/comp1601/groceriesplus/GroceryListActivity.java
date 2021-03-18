@@ -37,23 +37,6 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private FloatingActionButton mAddItemButton;
 
-    //for swipe to delete in recycler view
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            //Toast.makeText(ListActivity.this, "on Move", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Toast.makeText(ListActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
-            int position = viewHolder.getAdapterPosition();
-            handleRemoveGItem(position);
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +68,6 @@ public class GroceryListActivity extends AppCompatActivity {
 
         //recycler view launch
         loadRecyclerView();
-        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         //auto add item to empty glist
         if (gList.getGroceryItems().isEmpty()) {
