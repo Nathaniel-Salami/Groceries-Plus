@@ -40,7 +40,12 @@ public class MainActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
             db.deleteGroceryList(model.getGroceryList(position));
             model.removeGroceryList(position);
+
+            //regular notify
             mGLAdapter.notifyDataSetChanged();
+
+            //reload recycler view
+            loadRecyclerView();
         }
     };
 
@@ -59,13 +64,12 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.listRecyclerView);
         mAddListButton = findViewById(R.id.addListButton);
 
+        //grab model from db
         model.setGListArrayList(db.selectAllGroceryList());
 
         //launch recycler view
-        mGLAdapter = new GroceryListAdapter(this, model);
-        mRecyclerView.setAdapter(mGLAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
+        loadRecyclerView();
+        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         // handlers
         mAddListButton.setOnClickListener(view -> {
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void loadRecyclerView() {
+        mGLAdapter = new GroceryListAdapter(this, model);
+        mRecyclerView.setAdapter(mGLAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     // handle button activities
@@ -118,6 +128,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i("TEST", "onResume");
+
+        //grab model and launch recycler view
+        model.setGListArrayList(db.selectAllGroceryList());
+        loadRecyclerView();
+        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         //mGLAdapter.notifyItemChanged(0);
         mGLAdapter.notifyDataSetChanged();

@@ -53,7 +53,12 @@ public class GroceryListActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
             db.deleteGroceyItem(gList.getItem(position).getID(), gList.getID());
             gList.removeItem(position);
+
+            //regular notify
             mGroceryItemAdapter.notifyDataSetChanged();
+
+            //reload recycler view
+            loadRecyclerView();
         }
     };
 
@@ -85,10 +90,8 @@ public class GroceryListActivity extends AppCompatActivity {
         mDueDateEditText.setText(ToolBox.dateToUiString(gList.getDueDate()));
 
         //recycler view launch
-        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
-        mRecyclerView.setAdapter(mGroceryItemAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
+        loadRecyclerView();
+        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         //auto add item to empty glist
         if (gList.getGroceryItems().isEmpty()) {
@@ -118,6 +121,12 @@ public class GroceryListActivity extends AppCompatActivity {
         });
     }
 
+    private void loadRecyclerView() {
+        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
+        mRecyclerView.setAdapter(mGroceryItemAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
     private void addNewItem() {
         //clears focus from anything
         mListNameEditText.requestFocus();
@@ -131,35 +140,24 @@ public class GroceryListActivity extends AppCompatActivity {
         gList.addItem(newGroceryItem);
         db.insertNewGroceryItem(newGroceryItem, gList.getID());
 
-        mGroceryItemAdapter.notifyItemInserted(mGroceryItemAdapter.getItemCount() - 1);
-        mGroceryItemAdapter.notifyDataSetChanged();
-
-        /*
-
-        //update glist in db with what we currently have
-        updateGListDB();
-
-        //create new item and add it to the glist object and db
-        GroceryItem newGroceryItem = new GroceryItem();
-        gList.addItem(newGroceryItem);
-        db.insertNewGroceryItem(newGroceryItem, gList.getID());
+        // regular notify
+        //mGroceryItemAdapter.notifyItemInserted(mGroceryItemAdapter.getItemCount() - 1);
+        //mGroceryItemAdapter.notifyDataSetChanged();
 
         //load up new recycler view
-        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
-        mRecyclerView.setAdapter(mGroceryItemAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        loadRecyclerView();
 
         //scroll to bottom where new item should be
-        mRecyclerView.scrollToPosition(gList.getTotalItemCount() - 1);*/
+        mRecyclerView.scrollToPosition(gList.getTotalItemCount() - 1);
     }
 
     public void updateGListDB() {
-        gList.setName(mListNameEditText.getText().toString());
-        gList.setActive(mListActiveSwitch.isChecked());
-        gList.setDueDate(ToolBox.uiStringToDate(mDueDateEditText.getText().toString()));
-
         Log.i("TEST", "updateGListDB");
         Log.i("TEST", gList.toString());
+
+        gList.setName(mListNameEditText.getText().toString());
+        gList.setDueDate(ToolBox.uiStringToDate(mDueDateEditText.getText().toString()));
+        gList.setActive(mListActiveSwitch.isChecked());
 
         db.updateGroceryList(gList);
     }
