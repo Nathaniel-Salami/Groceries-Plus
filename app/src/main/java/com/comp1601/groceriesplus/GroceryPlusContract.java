@@ -13,7 +13,7 @@ public final class GroceryPlusContract {
         public static final String LIST_ID = "list_id";
         public static final String CREATED_DATE = "created_date";
         public static final String DUE_DATE = "due_date";
-        public static final String ACTIVE_DATE = "active_date";
+        public static final String ACTIVE_DATE = "in_active_date";
         public static final String LIST_NAME = "list_name";
         public static final String TYPE = "list_type";
         public static final String ACTIVE = "is_active";

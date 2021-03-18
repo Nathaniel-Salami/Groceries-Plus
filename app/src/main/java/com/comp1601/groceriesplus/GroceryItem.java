@@ -18,7 +18,7 @@ public class GroceryItem implements Serializable,Comparable<GroceryItem> {
     private Date restockDate;
 
     public GroceryItem() {
-        this(0, "", 0, 0, "", "", "", -1);
+        this(0, "", 0, 0, "", "", "", 0);
     }
 
     public GroceryItem(long id, String name, int found, int quantity, String foundDate, String expiryDate, String restockDate, int position) {

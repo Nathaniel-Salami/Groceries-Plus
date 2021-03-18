@@ -1,6 +1,7 @@
 package com.comp1601.groceriesplus;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +24,26 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton mAddListButton;
 
+    //for swipe to delete in recycler view
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            //Toast.makeText(ListActivity.this, "on Move", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            //Toast.makeText(ListActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
+            //Remove swiped item from list and notify the RecyclerView
+            int position = viewHolder.getAdapterPosition();
+            db.deleteGroceryList(model.getGroceryList(position));
+            model.removeGroceryList(position);
+            mGLAdapter.notifyDataSetChanged();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,21 +59,18 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.listRecyclerView);
         mAddListButton = findViewById(R.id.addListButton);
 
+        model.setGListArrayList(db.selectAllGroceryList());
 
-        loadRecyclerView();
+        //launch recycler view
+        mGLAdapter = new GroceryListAdapter(this, model);
+        mRecyclerView.setAdapter(mGLAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         // handlers
         mAddListButton.setOnClickListener(view -> {
             handleAddList();
         });
-    }
-
-    private void loadRecyclerView() {
-        model.setGListArrayList(db.selectAllGroceryList());
-
-        mGLAdapter = new GroceryListAdapter(this, model);
-        mRecyclerView.setAdapter(mGLAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -101,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.i("TEST", "onResume");
 
-        loadRecyclerView();
         //mGLAdapter.notifyItemChanged(0);
         mGLAdapter.notifyDataSetChanged();
     }

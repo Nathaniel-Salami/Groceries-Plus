@@ -75,12 +75,6 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
             holder.mListNameTextView.setText(gList.getName());
         }
 
-        //handle active lists
-        /*if (gList.isActive()) {
-            holder.mListNameTextView.setTextColor(Color.WHITE);
-            holder.mDueDateTextView.setTextColor(Color.WHITE);
-        }*/
-
         // handlers
         holder.mDeleteListButton.setOnClickListener(view -> {
             db.deleteGroceryList(gList);

@@ -1,12 +1,17 @@
 package com.comp1601.groceriesplus;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -14,13 +19,14 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class GroceryListActivity extends AppCompatActivity {
 
     public RecyclerView mRecyclerView;
-    public ItemAdapter mItemAdapter;
+    public GroceryItemAdapter mGroceryItemAdapter;
     public EditText mListNameEditText;
     public EditText mDueDateEditText;
     public SwitchMaterial mListActiveSwitch;
@@ -30,6 +36,26 @@ public class GroceryListActivity extends AppCompatActivity {
     public GroceryPlusDbHelper db;
 
     private FloatingActionButton mAddItemButton;
+
+    //for swipe to delete in recycler view
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            //Toast.makeText(ListActivity.this, "on Move", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            //Toast.makeText(ListActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
+            //Remove swiped item from list and notify the RecyclerView
+            int position = viewHolder.getAdapterPosition();
+            db.deleteGroceyItem(gList.getItem(position).getID(), gList.getID());
+            gList.removeItem(position);
+            mGroceryItemAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +85,10 @@ public class GroceryListActivity extends AppCompatActivity {
         mDueDateEditText.setText(ToolBox.dateToUiString(gList.getDueDate()));
 
         //recycler view launch
-        mItemAdapter = new ItemAdapter(this, gList);
-        mRecyclerView.setAdapter(mItemAdapter);
+        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
+        mRecyclerView.setAdapter(mGroceryItemAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        //new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         //auto add item to empty glist
         if (gList.getGroceryItems().isEmpty()) {
@@ -93,30 +119,55 @@ public class GroceryListActivity extends AppCompatActivity {
     }
 
     private void addNewItem() {
-        //Fixes weird bugs when clicking add button while a recycler view edit text has focus
+        //clears focus from anything
         mListNameEditText.requestFocus();
         mListNameEditText.clearFocus();
 
-        gList = mItemAdapter.getGroceryList();
+        //update glist in db with what we currently have
+        updateGListDB();
 
+        //create new item and add it to the glist object and db
         GroceryItem newGroceryItem = new GroceryItem();
-
-        long id = db.insertNewGroceryItem(newGroceryItem, gList.getID());
-        newGroceryItem.setID(id);
-
         gList.addItem(newGroceryItem);
+        db.insertNewGroceryItem(newGroceryItem, gList.getID());
 
-        mItemAdapter.notifyDataSetChanged();
+        mGroceryItemAdapter.notifyItemInserted(mGroceryItemAdapter.getItemCount() - 1);
+        mGroceryItemAdapter.notifyDataSetChanged();
+
+        /*
+
+        //update glist in db with what we currently have
+        updateGListDB();
+
+        //create new item and add it to the glist object and db
+        GroceryItem newGroceryItem = new GroceryItem();
+        gList.addItem(newGroceryItem);
+        db.insertNewGroceryItem(newGroceryItem, gList.getID());
+
+        //load up new recycler view
+        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
+        mRecyclerView.setAdapter(mGroceryItemAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //scroll to bottom where new item should be
+        mRecyclerView.scrollToPosition(gList.getTotalItemCount() - 1);*/
+    }
+
+    public void updateGListDB() {
+        gList.setName(mListNameEditText.getText().toString());
+        gList.setActive(mListActiveSwitch.isChecked());
+        gList.setDueDate(ToolBox.uiStringToDate(mDueDateEditText.getText().toString()));
+
+        Log.i("TEST", "updateGListDB");
+        Log.i("TEST", gList.toString());
+
+        db.updateGroceryList(gList);
     }
 
     @Override
     public void onBackPressed() {
         // update grocery list model object
-        gList.setName(mListNameEditText.getText().toString());
-        gList.setActive(mListActiveSwitch.isChecked());
-
-        Log.i("TEST", gList.toString());
-        db.updateGroceryList(gList);
+        updateGListDB();
 
         super.onBackPressed();
     }

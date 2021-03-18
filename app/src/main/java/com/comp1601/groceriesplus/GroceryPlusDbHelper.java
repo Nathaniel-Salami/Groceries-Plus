@@ -105,7 +105,11 @@ public class GroceryPlusDbHelper extends SQLiteOpenHelper {
     public List<GroceryList> selectAllGroceryList() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("select * from " + GroceryPlusContract.GroceryLists.TABLE_NAME,null);
+        // Which row to update, based on the title
+        String selection = "SELECT * FROM " + GroceryPlusContract.GroceryLists.TABLE_NAME +
+                " ORDER BY " + GroceryPlusContract.GroceryLists.POSITION + " ASC";
+
+        Cursor cursor = db.rawQuery(selection,null);
 
         List<GroceryList> gLists = new ArrayList<>();
 
@@ -176,6 +180,8 @@ public class GroceryPlusDbHelper extends SQLiteOpenHelper {
         // Insert the new row, returning the primary key value of the new row
         long newItemID = db.insert(GroceryPlusContract.ItemHistory.TABLE_NAME, null, values);
 
+        newGroceryItem.setID(newItemID);
+
         return newItemID;
     }
 
@@ -211,7 +217,7 @@ public class GroceryPlusDbHelper extends SQLiteOpenHelper {
                 selectionArgs,
                 null,
                 null,
-                null
+                GroceryPlusContract.ItemHistory.POSITION + " ASC"
         );
 
         List<GroceryItem> itemsList = new ArrayList<>();

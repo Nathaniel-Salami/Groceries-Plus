@@ -42,10 +42,13 @@ public class GroceryList implements Serializable {
     }
 
     public void addItem(GroceryItem groceryItem) {
-        //groceryItems.add(0, groceryItem); //adding to top causes ui issues
+        int newPos = 0;
+        for (int i = 0; i < groceryItems.size(); i++) {
+            groceryItems.get(i).setPosition(i);
+            newPos = i;
+        }
+        groceryItem.setPosition(newPos+1);
         groceryItems.add(groceryItem);
-        groceryItem.setPosition(groceryItems.size() - 1);
-        //Collections.sort(items);
     }
 
     public GroceryItem getItem(int index) {
