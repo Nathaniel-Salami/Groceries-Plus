@@ -16,7 +16,8 @@ public class ToolBox {
     public static final String DATE_FORMAT_DB = "dd/MM/yyyy HH:mm:ss";
     public static final String DATE_FORMAT_UI = "E, MMMM dd ";
 
-    static final String LIST_EXTRA = "glist";
+    static final String GLIST_EXTRA = "glist";
+    static final String MODEL_EXTRA = "gModel";
 
     public static String dateToUiString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_UI);

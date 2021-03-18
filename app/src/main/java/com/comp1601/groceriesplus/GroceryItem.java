@@ -98,11 +98,26 @@ public class GroceryItem implements Serializable,Comparable<GroceryItem> {
     }
 
     public boolean isExpired() {
-        return expiryDate.before(new Date());
+        if (expiryDate != null) {
+            return expiryDate.before(new Date());
+        }
+        return false;
     }
 
     public boolean needRestock() {
-        return restockDate.before(new Date());
+        if (restockDate != null) {
+            return restockDate.before(new Date());
+        }
+        return false;
+    }
+
+    public void reset() {
+        expiryDate = null;
+        restockDate = null;
+        foundDate = null;
+
+        found = false;
+
     }
 
     @Override

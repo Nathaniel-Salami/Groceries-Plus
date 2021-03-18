@@ -1,15 +1,13 @@
 package com.comp1601.groceriesplus;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -32,6 +31,7 @@ public class GroceryListActivity extends AppCompatActivity {
     public SwitchMaterial mListActiveSwitch;
 
     public GroceryList gList;
+    public GroceryModel model;
 
     public GroceryPlusDbHelper db;
 
@@ -49,16 +49,8 @@ public class GroceryListActivity extends AppCompatActivity {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
             //Toast.makeText(ListActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
-            //Remove swiped item from list and notify the RecyclerView
             int position = viewHolder.getAdapterPosition();
-            db.deleteGroceyItem(gList.getItem(position).getID(), gList.getID());
-            gList.removeItem(position);
-
-            //regular notify
-            mGroceryItemAdapter.notifyDataSetChanged();
-
-            //reload recycler view
-            loadRecyclerView();
+            handleRemoveGItem(position);
         }
     };
 
@@ -72,10 +64,12 @@ public class GroceryListActivity extends AppCompatActivity {
         // load list from intent
         Intent mIntent = getIntent();
         if(mIntent != null) {
-            gList = (GroceryList) mIntent.getSerializableExtra(ToolBox.LIST_EXTRA);
+            gList = (GroceryList) mIntent.getSerializableExtra(ToolBox.GLIST_EXTRA);
+            model = (GroceryModel) mIntent.getSerializableExtra(ToolBox.MODEL_EXTRA);
         }
         else {
             gList = new GroceryList(ListType.GENERATED);
+            model = null;
         }
 
         mRecyclerView = findViewById(R.id.itemRecyclerView);
@@ -95,12 +89,14 @@ public class GroceryListActivity extends AppCompatActivity {
 
         //auto add item to empty glist
         if (gList.getGroceryItems().isEmpty()) {
-            addNewItem();
+            GroceryItem newGroceryItem = new GroceryItem();
+            addGroceryItem(newGroceryItem);
         }
 
         // handlers
         mAddItemButton.setOnClickListener(view -> {
-            addNewItem();
+            GroceryItem newGroceryItem = new GroceryItem();
+            addGroceryItem(newGroceryItem);
         });
 
         mDueDateEditText.setOnFocusChangeListener((view, b) -> {
@@ -127,7 +123,7 @@ public class GroceryListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void addNewItem() {
+    private void addGroceryItem(GroceryItem newGroceryItem) {
         //clears focus from anything
         mListNameEditText.requestFocus();
         mListNameEditText.clearFocus();
@@ -136,7 +132,7 @@ public class GroceryListActivity extends AppCompatActivity {
         updateGListDB();
 
         //create new item and add it to the glist object and db
-        GroceryItem newGroceryItem = new GroceryItem();
+        //GroceryItem newGroceryItem = new GroceryItem();
         gList.addItem(newGroceryItem);
         db.insertNewGroceryItem(newGroceryItem, gList.getID());
 
@@ -170,6 +166,17 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    public void handleRemoveGItem(int position) {
+        db.deleteGroceyItem(gList.getItem(position).getID(), gList.getID());
+        gList.removeItem(position);
+
+        //regular notify
+        mGroceryItemAdapter.notifyDataSetChanged();
+
+        //reload recycler view
+        loadRecyclerView();
+    }
+
     public void handleDueDatePicker() {
         final Calendar myCalendar = Calendar.getInstance();
 
@@ -194,5 +201,44 @@ public class GroceryListActivity extends AppCompatActivity {
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.grocery_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.grocery_generator_button) {
+            Toast.makeText(this, "Generating Items . . .", Toast.LENGTH_SHORT).show();
+            if (!gList.isActive()) {
+                Toast.makeText(this, "This is an inactive List", Toast.LENGTH_SHORT).show();
+                return super.onOptionsItemSelected(item);
+            }
+            if (model != null) {
+                List<GroceryItem> generatedItems = model.generateGItems();
+
+                if (generatedItems == null) {
+                    Toast.makeText(this, "No Inactive Lists Available", Toast.LENGTH_SHORT).show();
+                }
+                else if (generatedItems.isEmpty()) {
+                    Toast.makeText(this, "No Expired Items Available", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    for (GroceryItem gi : generatedItems) {
+                        addGroceryItem(gi);
+                    }
+                }
+            }
+            else {
+                Toast.makeText(this, "Error Generating Items!!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

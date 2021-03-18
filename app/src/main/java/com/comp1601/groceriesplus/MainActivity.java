@@ -38,14 +38,7 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(ListActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
             //Remove swiped item from list and notify the RecyclerView
             int position = viewHolder.getAdapterPosition();
-            db.deleteGroceryList(model.getGroceryList(position));
-            model.removeGroceryList(position);
-
-            //regular notify
-            mGLAdapter.notifyDataSetChanged();
-
-            //reload recycler view
-            loadRecyclerView();
+            handleRemoveGList(position);
         }
     };
 
@@ -77,28 +70,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     public void loadRecyclerView() {
         mGLAdapter = new GroceryListAdapter(this, model);
         mRecyclerView.setAdapter(mGLAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.settings_button) {
-            Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     //THIS IS MESSY, FIX THIS
@@ -119,9 +94,20 @@ public class MainActivity extends AppCompatActivity {
 
         //open grocery list activity
         Intent intent = new Intent(this, GroceryListActivity.class);
-        intent.putExtra(ToolBox.LIST_EXTRA, model.getGroceryList(0));
-
+        intent.putExtra(ToolBox.GLIST_EXTRA, model.getGroceryList(0));
+        intent.putExtra(ToolBox.MODEL_EXTRA, model);
         startActivity(intent);
+    }
+
+    public void handleRemoveGList(int position) {
+        db.deleteGroceryList(model.getGroceryList(position));
+        model.removeGroceryList(position);
+
+        //regular notify
+        mGLAdapter.notifyDataSetChanged();
+
+        //reload recycler view
+        loadRecyclerView();
     }
 
     @Override
@@ -134,7 +120,24 @@ public class MainActivity extends AppCompatActivity {
         loadRecyclerView();
         new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
-        //mGLAdapter.notifyItemChanged(0);
         mGLAdapter.notifyDataSetChanged();
+    }
+
+    //setting button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.settings_button) {
+            Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

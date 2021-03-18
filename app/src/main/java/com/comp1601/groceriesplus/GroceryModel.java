@@ -1,11 +1,12 @@
 package com.comp1601.groceriesplus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class GroceryModel {
+public class GroceryModel implements Serializable {
     private List<GroceryList> gListArrayList;
 
     public GroceryModel() {
@@ -43,7 +44,7 @@ public class GroceryModel {
             }
         }
 
-        return gListArrayList;
+        return groceryLists;
     }
 
     public void setGListArrayList(List<GroceryList> gListArrayList) {
@@ -52,11 +53,15 @@ public class GroceryModel {
         this.gListArrayList.sort(Comparator.comparing(GroceryList::getPosition));
     }
 
-    private GroceryList generateGList() {
-        GroceryList newGList = new GroceryList(ListType.GENERATED);
+    public List<GroceryItem> generateGItems() {
+        //GroceryList newGList = new GroceryList(ListType.GENERATED);
+        List<GroceryItem> genrated = new ArrayList<>();
+        List<GroceryList> inActiveGroceryLists = getActiveGroceryLists(false);
+
+        if (inActiveGroceryLists.isEmpty()) return null;
 
         //loop through all inactive lists
-        for (GroceryList gl : getActiveGroceryLists(false)) {
+        for (GroceryList gl : inActiveGroceryLists) {
             //if the list was made inactive less than GLIST_LIMIT ago
 
             //loop through their items
@@ -64,12 +69,15 @@ public class GroceryModel {
                 //add expired/restock due items to newList
 
                 //add items that will expire in GITEM_LIMIT to new list
-                if (gi.needRestock() || gi.isExpired()) {
-                    newGList.addItem(gi);
+                if (gi.needRestock() || gi.isExpired() || !gi.isFound()) {
+                //if (gi.needRestock() || gi.isExpired()) {
+                    //reset item and add to list
+                    gi.reset();
+                    genrated.add(gi);
                 }
             }
         }
 
-        return newGList;
+        return genrated;
     }
 }

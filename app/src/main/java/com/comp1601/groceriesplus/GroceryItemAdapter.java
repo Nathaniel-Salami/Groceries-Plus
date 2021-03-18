@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -114,15 +113,7 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
         );
 
         holder.mDeleteItemButton.setOnClickListener(view -> {
-            //Toast.makeText(mContext,"Delete Item",Toast.LENGTH_SHORT).show();
-
-            db.deleteGroceyItem(groceryItem.getID(), gList.getID());
-            gList.removeItem(position);
-
-            //((GroceryListActivity) mContext).gList.removeItem(holder.getAdapterPosition());
-
-            this.notifyItemRemoved(holder.getAdapterPosition());
-            this.notifyDataSetChanged();
+            ((GroceryListActivity) mContext).handleRemoveGItem(holder.getAdapterPosition());
         });
 
         holder.mFoundCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {

@@ -7,10 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,13 +41,6 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
         db = new GroceryPlusDbHelper(mContext);
     }
 
-    /*@Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(
-                LayoutInflater.from(mContext).inflate(R.layout.adapter_grocery_list, parent, false)
-        );
-    }*/
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -64,7 +53,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final GroceryList gList = groceryModel.getGroceryList(position);
+        final GroceryList gList = groceryModel.getGroceryList(holder.getAdapterPosition());
 
         //basic setters
         if (gList.getDueDate() != null) {
@@ -77,11 +66,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
 
         // handlers
         holder.mDeleteListButton.setOnClickListener(view -> {
-            db.deleteGroceryList(gList);
-            groceryModel.removeGroceryList(position);
-
-            this.notifyItemRemoved(position);
-            this.notifyDataSetChanged();
+            ((MainActivity) mContext).handleRemoveGList(holder.getAdapterPosition());
         });
 
         // whole list item click event
@@ -92,7 +77,8 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
 
                 Intent intent = new Intent(mContext, GroceryListActivity.class);
 
-                intent.putExtra(ToolBox.LIST_EXTRA, gList);
+                intent.putExtra(ToolBox.GLIST_EXTRA, gList);
+                intent.putExtra(ToolBox.MODEL_EXTRA, groceryModel);
 
                 mContext.startActivity(intent);
             }
