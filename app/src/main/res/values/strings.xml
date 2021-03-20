@@ -21,4 +21,10 @@
     <string name="expiryDateHint">Expiry Date</string>
     <string name="restockDateHint">Restock Date</string>
     <string name="dueDateHint">Due Date</string>
+
+    <string name="clearDate">Clear</string>
+
+    <string name="inactiveListWarning">This is an inactive List</string>
+    <string name="noInactiveListWarning">No Inactive Lists Available</string>
+    <string name="noGenerateItemsWarning">No Items Available</string>
 </resources>

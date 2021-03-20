@@ -33,11 +33,13 @@
         android:id="@+id/listNameEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="12dp"
         android:background="@android:color/transparent"
+        android:ems="9"
         android:hint="@string/listNameText"
         android:inputType="textPersonName"
         android:padding="0dp"
+        android:textColor="?attr/primaryText"
         android:textSize="@dimen/activity_list_name_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +62,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dueDateText"
-            android:textColor="?attr/activeSecondaryText"
             android:textSize="@dimen/adapter_item_other_size" />
 
         <ImageButton
@@ -78,7 +79,6 @@
             android:paddingEnd="2dp"
             android:textAllCaps="false"
 
-            android:textColor="?attr/activeSecondaryText"
             android:textSize="@dimen/button_date_size"
             app:srcCompat="@drawable/ic_baseline_date_range_24" />
 
@@ -92,7 +92,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="0dp"
-            android:textColor="?attr/activeSecondaryText"
+            android:textColor="?attr/secondaryText"
             android:textSize="@dimen/adapter_item_other_size" />
 
     </LinearLayout>

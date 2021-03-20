@@ -60,12 +60,16 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
 
         //basic setters
         if (gList.getDueDate() != null) {
+            holder.mDueDateTextView.setEnabled(gList.isActive());
             holder.mDueDateTextView.setText(ToolBox.dateToUiString(gList.getDueDate()));
         }
 
         if (!gList.getName().isEmpty()) {
+            holder.mListNameTextView.setEnabled(gList.isActive());
             holder.mListNameTextView.setText(gList.getName());
         }
+
+
 
         // handlers
         holder.mDeleteListButton.setOnClickListener(view -> {

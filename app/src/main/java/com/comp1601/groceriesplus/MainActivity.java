@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         model = new GroceryModel();
         //model = GroceryModel.makeDemo();
+
         db = new GroceryPlusDbHelper(this);
 
         //reset database
@@ -76,11 +77,15 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    //THIS IS MESSY, FIX THIS
     //create and new glist and launch glist activity
     private void handleAddList() {
         //add list to model
         GroceryList newList = new GroceryList(ListType.USER_CREATED);
+
+        //add item to list
+        //GroceryItem newGroceryItem = new GroceryItem();
+        //newList.addItem(newGroceryItem);
+
         model.addGroceryList(newList);
 
         //add to db and set model id to db id

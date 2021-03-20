@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:minHeight="@dimen/adapter_item_other_size">
+    android:minHeight="@dimen/adapter_item_other_size"
+    android:paddingStart="8dp">
 
     <ImageButton
         android:id="@+id/deleteListButton"
@@ -24,15 +25,15 @@
         android:id="@+id/itemNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
 
         android:background="@android:color/transparent"
         android:ems="10"
-        android:hint="@string/itemNameText"
 
+        android:hint="@string/itemNameText"
         android:imeOptions="actionDone"
         android:inputType="textMultiLine"
-        android:textColor="?attr/activePrimaryText"
+        android:textColor="?attr/primaryText"
         android:textSize="@dimen/adapter_item_name_size"
         app:layout_constraintBottom_toTopOf="@id/expireRow"
         app:layout_constraintStart_toEndOf="@id/foundCheckBox"
@@ -49,7 +50,7 @@
         android:hint="@string/numberFillText"
 
         android:inputType="number"
-        android:textColor="?attr/activeSecondaryText"
+        android:textColor="?attr/secondaryText"
         android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toBottomOf="@id/textView7"
         app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -75,7 +76,6 @@
 
         android:text="@string/itemAmount"
 
-        android:textColor="?attr/activeSecondaryText"
         android:textSize="@dimen/adapter_item_other_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/restockRow"
@@ -99,21 +99,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/expireText"
-            android:textColor="?attr/activeSecondaryText"
-            android:textSize="@dimen/adapter_item_other_size" />
-
-        <TextView
-            android:id="@+id/expiryDateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-
-            android:background="@android:color/transparent"
-            android:hint="@string/expiryDateHint"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:padding="0dp"
-            android:textColor="?attr/activeSecondaryText"
             android:textSize="@dimen/adapter_item_other_size" />
 
         <ImageButton
@@ -127,12 +112,26 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="0dp"
-
             android:paddingStart="4dp"
+
+            android:paddingEnd="2dp"
             android:textAllCaps="false"
-            android:textColor="?attr/activeSecondaryText"
+            android:textColor="?attr/secondaryText"
             android:textSize="@dimen/button_date_size"
             app:srcCompat="@drawable/ic_baseline_date_range_24" />
+
+        <TextView
+            android:id="@+id/expiryDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:hint="@string/expiryDateHint"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:textColor="?attr/secondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
 
     </LinearLayout>
 
@@ -147,6 +146,13 @@
         app:layout_constraintStart_toStartOf="@+id/expireRow"
         app:layout_constraintTop_toBottomOf="@id/expireRow">
 
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/restockText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
         <ImageButton
             android:id="@+id/restockDateButton"
             android:layout_width="wrap_content"
@@ -158,33 +164,25 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="0dp"
-            android:paddingEnd="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="2dp"
             android:textAllCaps="false"
-            android:textColor="?attr/activeSecondaryText"
+            android:textColor="?attr/secondaryText"
 
             android:textSize="@dimen/button_date_size"
             app:srcCompat="@drawable/ic_baseline_date_range_24" />
 
         <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restockText"
-            android:textColor="?attr/activeSecondaryText"
-            android:textSize="@dimen/adapter_item_other_size" />
-
-        <TextView
             android:id="@+id/restockDateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
 
             android:background="@android:color/transparent"
             android:hint="@string/restockDateHint"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="0dp"
-            android:textColor="?attr/activeSecondaryText"
+            android:textColor="?attr/secondaryText"
             android:textSize="@dimen/adapter_item_other_size" />
 
     </LinearLayout>

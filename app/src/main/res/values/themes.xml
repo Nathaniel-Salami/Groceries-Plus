@@ -13,11 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="activePrimaryText">@color/black</item>
-        <item name="inActivePrimaryText">#373737</item>
+        <item name="primaryText">@color/light_primary_text</item>
 
-        <item name="activeSecondaryText">@color/black</item>
-        <item name="inactiveSecondaryText">#373737</item>
+        <item name="secondaryText">@color/light_secondary_text</item>
 
         <item name="addButton">#00A2FF</item>
     </style>

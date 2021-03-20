@@ -2,6 +2,7 @@ package com.comp1601.groceriesplus;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,8 @@ public class GroceryListActivity extends AppCompatActivity {
     private ImageButton mDueDateButton;
     private LinearLayout mDueDateRow;
     private TextView mDueDateText;
+
+    private ItemTouchHelper mItemTouchHelper;
 
     public GroceryList gList;
     public GroceryModel model;
@@ -78,7 +81,11 @@ public class GroceryListActivity extends AppCompatActivity {
             model = null;
         }
 
+        //initialize recycler view
         mRecyclerView = findViewById(R.id.itemRecyclerView);
+        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
+        mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+
         mAddItemButton = findViewById(R.id.addItemButton);
         mListNameEditText = findViewById(R.id.listNameEditText);
         mListActiveSwitch = findViewById(R.id.activeSwitch);
@@ -87,24 +94,28 @@ public class GroceryListActivity extends AppCompatActivity {
         mDueDateRow = findViewById(R.id.dueDateRow);
         mDueDateText = findViewById(R.id.dueDateText);
 
+
         //basic setters
         mListNameEditText.setText(gList.getName());
-        mListActiveSwitch.setChecked(gList.isActive());
 
         String dueDate = gList.getDueDate() != null ?
                 ToolBox.dateToUiString(gList.getDueDate()) : "";
         mDueDateText.setText(dueDate);
 
-        //prevent recycler view from recyling (causes performance issue for vlarge lists
+        mAddItemButton.setEnabled(gList.isActive());
+
+        mListActiveSwitch.setChecked(gList.isActive());
 
         //recycler view launch
-        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
         mRecyclerView.setAdapter(mGroceryItemAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
+        mItemTouchHelper.attachToRecyclerView(gList.isActive() ? mRecyclerView : null);
+
+        //handle if glist is active
+        handleGListActive();
 
         //auto add item to empty glist
-        if (gList.getGroceryItems().isEmpty()) {
+        if (gList.getGroceryItems().isEmpty() && gList.isActive()) {
             GroceryItem newGroceryItem = new GroceryItem();
             addGroceryItem(newGroceryItem);
         }
@@ -119,21 +130,31 @@ public class GroceryListActivity extends AppCompatActivity {
             handleDueDatePicker();
         });
 
-        /*mListActiveSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
+        mListActiveSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            gList.setActive(mListActiveSwitch.isChecked());
 
-            }
-            else {
-
-            }
-        });*/
-
+            handleGListActive();
+        });
 
         final Calendar myCalendar = Calendar.getInstance();
 
         if (gList.getDueDate() != null) {
             myCalendar.setTime(gList.getDueDate());
         }
+    }
+
+    private void handleGListActive() {
+        mAddItemButton.setEnabled(gList.isActive());
+        mDueDateRow.setEnabled(gList.isActive());
+        mDueDateText.setEnabled(gList.isActive());
+        mListNameEditText.setEnabled(gList.isActive());
+
+        //findViewById(R.id.grocery_generator_button).setEnabled(gList.isActive());
+
+        //reload recycler view
+        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
+        mRecyclerView.setAdapter(mGroceryItemAdapter);
+        mItemTouchHelper.attachToRecyclerView(gList.isActive() ? mRecyclerView : null);
     }
 
     private void addGroceryItem(GroceryItem newGroceryItem) {
@@ -208,9 +229,20 @@ public class GroceryListActivity extends AppCompatActivity {
             gList.setDueDate(myCalendar.getTime());
         };
 
-        new DatePickerDialog(this, date, myCalendar
+        DatePickerDialog dateDialog = new DatePickerDialog(this, date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                myCalendar.get(Calendar.DAY_OF_MONTH));
+
+        dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.clearDate), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                    mDueDateText.setText("");
+                    gList.setDueDate(null);
+                }
+            }
+        });
+
+        dateDialog.show();
     }
 
     @Override
@@ -226,17 +258,17 @@ public class GroceryListActivity extends AppCompatActivity {
         if (id == R.id.grocery_generator_button) {
             //Toast.makeText(this, "Generating Items . . .", Toast.LENGTH_SHORT).show();
             if (!gList.isActive()) {
-                Toast.makeText(this, "This is an inactive List", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.inactiveListWarning), Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
             }
             if (model != null) {
                 List<GroceryItem> generatedItems = model.generateGItems();
 
                 if (generatedItems == null) {
-                    Toast.makeText(this, "No Inactive Lists Available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.noInactiveListWarning), Toast.LENGTH_SHORT).show();
                 }
                 else if (generatedItems.isEmpty()) {
-                    Toast.makeText(this, "No Expired Items Available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.noGenerateItemsWarning), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     for (GroceryItem gi : generatedItems) {

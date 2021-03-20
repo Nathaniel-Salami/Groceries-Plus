@@ -53,6 +53,12 @@ public class GroceryModel implements Serializable {
         this.gListArrayList.sort(Comparator.comparing(GroceryList::getPosition));
     }
 
+    public void addGListArrayList(List<GroceryList> gListArrayList) {
+        this.gListArrayList.addAll(gListArrayList);
+
+        this.gListArrayList.sort(Comparator.comparing(GroceryList::getPosition));
+    }
+
     public List<GroceryItem> generateGItems() {
         //GroceryList newGList = new GroceryList(ListType.GENERATED);
         List<GroceryItem> genrated = new ArrayList<>();
@@ -67,10 +73,10 @@ public class GroceryModel implements Serializable {
             //loop through their items
             for (GroceryItem gi : gl.getGroceryItems()) {
                 //add expired/restock due items to newList
-
-                //add items that will expire in GITEM_LIMIT to new list
-                if (gi.needRestock() || gi.isExpired() || !gi.isFound()) {
-                    //reset item and add to list
+                if ((gi.needRestock() ||
+                        gi.isExpired() ||
+                        !gi.isFound()) &&
+                        !gi.getName().isEmpty()) {
                     gi.reset();
                     genrated.add(gi);
                 }
@@ -78,5 +84,47 @@ public class GroceryModel implements Serializable {
         }
 
         return genrated;
+    }
+
+    public static GroceryModel makeDemo() {
+        GroceryModel model = new GroceryModel();
+        GroceryList gl0 = new GroceryList(0, "Loblaws1",0, 0,
+                "01/01/2021 00:00:00",
+                "01/02/2021 00:00:00",
+                "02/02/2021 00:00:00",
+                200);
+
+        GroceryItem gi0 = new GroceryItem(0, "Celery", 1, 6,
+                "01/02/2021 00:00:00",
+                "10/02/2021 00:00:00",
+                "",
+                0);
+
+        GroceryItem gi1 = new GroceryItem(1, "Carrots", 1, 8,
+                "01/02/2021 00:00:00",
+                "14/02/2021 00:00:00",
+                "",
+                1);
+
+        GroceryItem gi2 = new GroceryItem(2, "Cake", 0, 1,
+                "01/02/2021 00:00:00",
+                "",
+                "09/02/2021 00:00:00",
+                2);
+
+        GroceryItem gi3 = new GroceryItem(0, "Chicken", 1, 2,
+                "01/02/2021 00:00:00",
+                "20/02/2021 00:00:00",
+                "",
+                3);
+
+        gl0.addItem(gi0);
+        gl0.addItem(gi1);
+        gl0.addItem(gi2);
+        gl0.addItem(gi3);
+
+        model.addGroceryList(gl0);
+
+        return model;
     }
 }

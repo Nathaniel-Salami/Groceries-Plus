@@ -2,6 +2,7 @@ package com.comp1601.groceriesplus;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -110,6 +111,17 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
                 ToolBox.dateToUiString(groceryItem.getRestockDate()) : "";
         holder.mRestockDateText.setText(resDate);
 
+        //disable view if glist is inactive
+        holder.mFoundCheckBox.setEnabled(gList.isActive());
+        holder.mItemNameEditText.setEnabled(gList.isActive());
+        holder.mQuantityEditText.setEnabled(gList.isActive());
+        holder.mExpiryDateText.setEnabled(gList.isActive());
+        holder.mExpireRow.setEnabled(gList.isActive());
+        holder.mRestockDateText.setEnabled(gList.isActive());
+        holder.mRestockRow.setEnabled(gList.isActive());
+        holder.mDeleteItemButton.setEnabled(gList.isActive());
+
+
         //handlers
         holder.mExpireRow.setOnClickListener(v -> {
             handleDatePicker(mContext, holder.mExpiryDateText, gList.getItem(holder.getAdapterPosition()), AdapterInputType.EXPIRY);
@@ -170,21 +182,33 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
             textView.setText(pickedDate);
 
             if (inputType == AdapterInputType.EXPIRY) {
-                //pickedDate = mContext.getString(R.string.expireText) + " " + pickedDate;
-                //textView.setText(pickedDate);
                 groceryItem.setExpiryDate(myCalendar.getTime());
             }
             else if (inputType == AdapterInputType.RESTOCK) {
-                //pickedDate = mContext.getString(R.string.restockText) + " " + pickedDate;
-                //textView.setText(pickedDate);
                 groceryItem.setRestockDate(myCalendar.getTime());
             }
 
         };
 
-        new DatePickerDialog(context, date, myCalendar
+        DatePickerDialog dateDialog = new DatePickerDialog(context, date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                myCalendar.get(Calendar.DAY_OF_MONTH));
+
+        dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE, mContext.getString(R.string.clearDate), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                    textView.setText("");
+                    if (inputType == AdapterInputType.EXPIRY) {
+                        groceryItem.setExpiryDate(null);
+                    }
+                    else if (inputType == AdapterInputType.RESTOCK) {
+                        groceryItem.setRestockDate(null);
+                    }
+                }
+            }
+        });
+
+        dateDialog.show();
     }
 
     public TextWatcher makeTextWatcher(GroceryItem groceryItem, EditText editText, AdapterInputType inputType) {

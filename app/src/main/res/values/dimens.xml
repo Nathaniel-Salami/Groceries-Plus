@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="adapter_list_name_size">18sp</dimen>
+    <dimen name="adapter_list_name_size">20sp</dimen>
     <dimen name="adapter_list_other_size">16sp</dimen>
 
     <dimen name="adapter_item_name_size">20sp</dimen>
     <dimen name="adapter_item_other_size">15sp</dimen>
 
-    <dimen name="activity_list_name_size">20sp</dimen>
+    <dimen name="activity_list_name_size">22sp</dimen>
     <dimen name="activity_list_other_size">16sp</dimen>
 
     <dimen name="button_date_size">15sp</dimen>

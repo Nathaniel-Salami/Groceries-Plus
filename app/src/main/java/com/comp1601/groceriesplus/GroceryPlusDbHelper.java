@@ -69,6 +69,9 @@ public class GroceryPlusDbHelper extends SQLiteOpenHelper {
     }
 
     public Boolean updateGroceryList(GroceryList gList) {
+        //update grocewry items
+        this.updateGroceryItems(gList);
+
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -95,9 +98,6 @@ public class GroceryPlusDbHelper extends SQLiteOpenHelper {
                 values,
                 selection,
                 selectionArgs);
-
-        //update grocewry items
-        this.updateGroceryItems(gList);
 
         return count != 0;
     }
