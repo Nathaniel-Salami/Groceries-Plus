@@ -104,10 +104,11 @@ public class MainActivity extends AppCompatActivity {
         model.removeGroceryList(position);
 
         //regular notify
+        //mGLAdapter.notifyItemRemoved(position);
         mGLAdapter.notifyDataSetChanged();
 
         //reload recycler view
-        loadRecyclerView();
+        //loadRecyclerView();
     }
 
     @Override

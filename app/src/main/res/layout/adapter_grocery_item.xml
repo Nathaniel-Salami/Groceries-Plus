@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/linearLayout6"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:minHeight="@dimen/adapter_item_other_size"
-    android:padding="5dp"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp">
+    android:minHeight="@dimen/adapter_item_other_size">
 
     <ImageButton
         android:id="@+id/deleteListButton"
@@ -25,15 +24,17 @@
         android:id="@+id/itemNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
 
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="5dp"
         android:background="@android:color/transparent"
+        android:ems="10"
         android:hint="@string/itemNameText"
-        android:inputType="textAutoComplete"
+
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:textColor="?attr/activePrimaryText"
         android:textSize="@dimen/adapter_item_name_size"
-        app:layout_constraintBottom_toTopOf="@id/dueDateTextView"
+        app:layout_constraintBottom_toTopOf="@id/expireRow"
         app:layout_constraintStart_toEndOf="@id/foundCheckBox"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,14 +42,18 @@
         android:id="@+id/itemQuantityEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+
         android:background="@android:color/transparent"
+        android:ems="2"
         android:hint="@string/numberFillText"
+
         android:inputType="number"
+        android:textColor="?attr/activeSecondaryText"
         android:textSize="@dimen/adapter_item_other_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/restockDateEditText"
-        app:layout_constraintStart_toStartOf="@+id/restockDateEditText"
-        app:layout_constraintTop_toBottomOf="@+id/restockDateEditText" />
+        app:layout_constraintBottom_toBottomOf="@id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@id/textView7" />
 
 
     <CheckBox
@@ -56,64 +61,132 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
 
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/itemNameEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/expireText"
-        android:textSize="@dimen/adapter_item_other_size"
-        app:layout_constraintBottom_toBottomOf="@+id/dueDateTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dueDateTextView" />
-
-    <EditText
-        android:id="@+id/dueDateTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="4dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/dateFillText"
-        android:textSize="@dimen/adapter_item_other_size"
-        app:layout_constraintBottom_toTopOf="@id/restockDateEditText"
-        app:layout_constraintStart_toEndOf="@id/textView5"
-        app:layout_constraintTop_toBottomOf="@id/itemNameEditText" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/restockText"
-        android:textSize="@dimen/adapter_item_other_size"
-        app:layout_constraintBottom_toBottomOf="@+id/restockDateEditText"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/restockDateEditText" />
-
-    <EditText
-        android:id="@+id/restockDateEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/dateFillText"
-        android:textSize="@dimen/adapter_item_other_size"
-        app:layout_constraintBottom_toTopOf="@id/itemQuantityEditText"
-        app:layout_constraintStart_toStartOf="@+id/dueDateTextView"
-        app:layout_constraintTop_toBottomOf="@id/dueDateTextView" />
+        app:layout_constraintTop_toTopOf="@+id/itemNameEditText" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginTop="8dp"
+
         android:text="@string/itemAmount"
+
+        android:textColor="?attr/activeSecondaryText"
         android:textSize="@dimen/adapter_item_other_size"
-        app:layout_constraintBottom_toBottomOf="@+id/itemQuantityEditText"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/itemQuantityEditText" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/restockRow"
+        app:layout_constraintTop_toBottomOf="@+id/restockRow" />
+
+    <LinearLayout
+        android:id="@+id/expireRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/restockRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/itemNameEditText">
+
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expireText"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
+        <TextView
+            android:id="@+id/expiryDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+
+            android:background="@android:color/transparent"
+            android:hint="@string/expiryDateHint"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
+        <ImageButton
+            android:id="@+id/dueDateText_List"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif"
+
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+
+            android:paddingStart="4dp"
+            android:textAllCaps="false"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/button_date_size"
+            app:srcCompat="@drawable/ic_baseline_date_range_24" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/restockRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/itemQuantityEditText"
+        app:layout_constraintStart_toStartOf="@+id/expireRow"
+        app:layout_constraintTop_toBottomOf="@id/expireRow">
+
+        <ImageButton
+            android:id="@+id/restockDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif"
+
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:paddingEnd="4dp"
+            android:textAllCaps="false"
+            android:textColor="?attr/activeSecondaryText"
+
+            android:textSize="@dimen/button_date_size"
+            app:srcCompat="@drawable/ic_baseline_date_range_24" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/restockText"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
+        <TextView
+            android:id="@+id/restockDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+
+            android:background="@android:color/transparent"
+            android:hint="@string/restockDateHint"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

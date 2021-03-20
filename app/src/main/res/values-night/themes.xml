@@ -12,5 +12,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="activePrimaryText">@color/white</item>
+        <item name="inActivePrimaryText">#BEBEBE</item>
+
+        <item name="activeSecondaryText">@color/white</item>
+        <item name="inactiveSecondaryText">#BEBEBE</item>
+
+        <item name="addButton">#5DFF6E</item>
     </style>
 </resources>

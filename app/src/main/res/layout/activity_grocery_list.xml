@@ -12,10 +12,11 @@
         android:id="@+id/itemRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        tools:listitem="@layout/adapter_grocery_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dueDateTextView"/>
+        app:layout_constraintTop_toBottomOf="@id/dueDateRow"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addItemButton"
@@ -38,35 +39,63 @@
         android:inputType="textPersonName"
         android:padding="0dp"
         android:textSize="@dimen/activity_list_name_size"
-        app:layout_constraintEnd_toEndOf="@id/dueDateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView5"
+    <LinearLayout
+        android:id="@+id/dueDateRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
 
-        android:text="@string/dueDateText"
-        android:textSize="@dimen/activity_list_other_size"
-        app:layout_constraintBottom_toBottomOf="@+id/dueDateTextView"
-        app:layout_constraintStart_toStartOf="@+id/listNameEditText"
-        app:layout_constraintTop_toTopOf="@+id/dueDateTextView" />
-
-    <EditText
-        android:id="@+id/dueDateTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/dateFillText"
-        android:textSize="@dimen/activity_list_other_size"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/itemRecyclerView"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/listNameEditText" />
+        app:layout_constraintStart_toStartOf="@+id/listNameEditText"
+        app:layout_constraintTop_toBottomOf="@+id/listNameEditText">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dueDateText"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
+        <ImageButton
+            android:id="@+id/dueDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif"
+
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="2dp"
+            android:textAllCaps="false"
+
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/button_date_size"
+            app:srcCompat="@drawable/ic_baseline_date_range_24" />
+
+        <TextView
+            android:id="@+id/dueDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:hint="@string/dueDateHint"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:textColor="?attr/activeSecondaryText"
+            android:textSize="@dimen/adapter_item_other_size" />
+
+    </LinearLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/activeSwitch"

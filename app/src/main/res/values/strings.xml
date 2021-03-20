@@ -16,6 +16,9 @@
 
     <string name="addButtonText">Add</string>
 
-    <string name="dateFillText">DD/MM/YYYY</string>
+    <string name="dateFillText">Mon., January 1</string>
     <string name="numberFillText">##</string>
+    <string name="expiryDateHint">Expiry Date</string>
+    <string name="restockDateHint">Restock Date</string>
+    <string name="dueDateHint">Due Date</string>
 </resources>

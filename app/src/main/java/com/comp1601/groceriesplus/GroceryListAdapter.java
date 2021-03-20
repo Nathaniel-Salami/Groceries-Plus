@@ -29,7 +29,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
             super(view);
             this.parentView = view;
             this.mListNameTextView = view.findViewById(R.id.listNameTextView);
-            this.mDueDateTextView = view.findViewById(R.id.dueDateTextView);
+            this.mDueDateTextView = view.findViewById(R.id.dueDateText_List);
             this.mDeleteListButton = view.findViewById(R.id.deleteListButton);
         }
     }
@@ -54,6 +54,9 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final GroceryList gList = groceryModel.getGroceryList(holder.getAdapterPosition());
+
+        //stops recyling
+        holder.setIsRecyclable(false);
 
         //basic setters
         if (gList.getDueDate() != null) {
@@ -88,5 +91,15 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
     @Override
     public int getItemCount() {
         return this.groceryModel.getAllGroceryLists().size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return this.groceryModel.getGroceryList(position).getID();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

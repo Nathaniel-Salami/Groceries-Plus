@@ -3,6 +3,6 @@
     <item
         android:id="@+id/grocery_generator_button"
         android:icon="@drawable/ic_baseline_playlist_add_24"
-        android:title="Grocery Generator Button"
+        android:title="Generate Grocery Items"
         app:showAsAction="always" />
 </menu>

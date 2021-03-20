@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Other values-->
+    <attr name="activePrimaryText" format="reference" />
+    <attr name="inActivePrimaryText" format="string" />
+
+    <attr name="activeSecondaryText" format="reference" />
+    <attr name="inactiveSecondaryText" format="string" />
+
+    <attr name="addButton" format="string" />
+
+</resources>
