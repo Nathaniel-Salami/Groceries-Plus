@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
         model = new GroceryModel();
         //model = GroceryModel.makeDemo();
 
-        db = new GroceryPlusDbHelper(this);
-
         //reset database
-        //db.resetDatabase();
+        //this.deleteDatabase(GroceryPlusDbHelper.DATABASE_NAME);
 
+        db = new GroceryPlusDbHelper(this);
+        
         mRecyclerView = findViewById(R.id.listRecyclerView);
         mAddListButton = findViewById(R.id.addListButton);
 
