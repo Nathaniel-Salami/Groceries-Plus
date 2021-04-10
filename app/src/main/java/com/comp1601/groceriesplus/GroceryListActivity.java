@@ -34,8 +34,9 @@ public class GroceryListActivity extends AppCompatActivity {
     public SwitchMaterial mListActiveSwitch;
 
     private ImageButton mDueDateButton;
-    private LinearLayout mDueDateRow;
-    private TextView mDueDateText;
+    //private LinearLayout mDueDateRow;
+    private EditText mDueDateEditText;
+    //private TextView mDueDateText;
 
     private ItemTouchHelper mItemTouchHelper;
 
@@ -84,35 +85,28 @@ public class GroceryListActivity extends AppCompatActivity {
         //initialize recycler view
         mRecyclerView = findViewById(R.id.itemRecyclerView);
         mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
-        mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
 
         mAddItemButton = findViewById(R.id.addItemButton);
         mListNameEditText = findViewById(R.id.listNameEditText);
         mListActiveSwitch = findViewById(R.id.activeSwitch);
 
         mDueDateButton = findViewById(R.id.dueDateButton);
-        mDueDateRow = findViewById(R.id.dueDateRow);
-        mDueDateText = findViewById(R.id.dueDateText);
+        mDueDateEditText = findViewById(R.id.dueDateEditText);
 
 
         //basic setters
         mListNameEditText.setText(gList.getName());
 
+        mListActiveSwitch.setChecked(gList.isActive());
+
         String dueDate = gList.getDueDate() != null ?
                 ToolBox.dateToUiString(gList.getDueDate()) : "";
-        mDueDateText.setText(dueDate);
-
-        mAddItemButton.setEnabled(gList.isActive());
-
-        mListActiveSwitch.setChecked(gList.isActive());
+        mDueDateEditText.setText(dueDate);
 
         //recycler view launch
         mRecyclerView.setAdapter(mGroceryItemAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mItemTouchHelper.attachToRecyclerView(gList.isActive() ? mRecyclerView : null);
-
-        //handle if glist is active
-        handleGListActive();
+        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         //auto add item to empty glist
         if (gList.getGroceryItems().isEmpty() && gList.isActive()) {
@@ -122,39 +116,18 @@ public class GroceryListActivity extends AppCompatActivity {
 
         // handlers
         mAddItemButton.setOnClickListener(view -> {
-            GroceryItem newGroceryItem = new GroceryItem();
-            addGroceryItem(newGroceryItem);
-        });
-
-        mDueDateRow.setOnClickListener(v -> {
-            handleDueDatePicker();
+            if (gList.isActive()) {
+                GroceryItem newGroceryItem = new GroceryItem();
+                addGroceryItem(newGroceryItem);
+            }
+            else {
+                Toast.makeText(this, getString(R.string.inactiveListWarning), Toast.LENGTH_SHORT).show();
+            }
         });
 
         mListActiveSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             gList.setActive(mListActiveSwitch.isChecked());
-
-            handleGListActive();
         });
-
-        final Calendar myCalendar = Calendar.getInstance();
-
-        if (gList.getDueDate() != null) {
-            myCalendar.setTime(gList.getDueDate());
-        }
-    }
-
-    private void handleGListActive() {
-        mAddItemButton.setEnabled(gList.isActive());
-        mDueDateRow.setEnabled(gList.isActive());
-        mDueDateText.setEnabled(gList.isActive());
-        mListNameEditText.setEnabled(gList.isActive());
-
-        //findViewById(R.id.grocery_generator_button).setEnabled(gList.isActive());
-
-        //reload recycler view
-        mGroceryItemAdapter = new GroceryItemAdapter(this, gList);
-        mRecyclerView.setAdapter(mGroceryItemAdapter);
-        mItemTouchHelper.attachToRecyclerView(gList.isActive() ? mRecyclerView : null);
     }
 
     private void addGroceryItem(GroceryItem newGroceryItem) {
@@ -186,7 +159,7 @@ public class GroceryListActivity extends AppCompatActivity {
         Log.i("TEST", gList.toString());
 
         gList.setName(mListNameEditText.getText().toString());
-        gList.setDueDate(ToolBox.uiStringToDate(mDueDateText.getText().toString()));
+        gList.setDueDate(ToolBox.uiStringToDate(mDueDateEditText.getText().toString()));
         gList.setActive(mListActiveSwitch.isChecked());
 
         db.updateGroceryList(gList);
@@ -206,43 +179,6 @@ public class GroceryListActivity extends AppCompatActivity {
 
         //regular notify
         mGroceryItemAdapter.notifyDataSetChanged();
-
-        //reload recycler view
-        //loadRecyclerView();
-    }
-
-    public void handleDueDatePicker() {
-        final Calendar myCalendar = Calendar.getInstance();
-
-        if (gList.getDueDate() != null)
-            myCalendar.setTime(gList.getDueDate());
-
-        DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-            //format date
-            String pickedDate = ToolBox.dateToUiString(myCalendar.getTime());
-            mDueDateText.setText(pickedDate);
-
-            gList.setDueDate(myCalendar.getTime());
-        };
-
-        DatePickerDialog dateDialog = new DatePickerDialog(this, date, myCalendar
-                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH));
-
-        dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.clearDate), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_NEGATIVE) {
-                    mDueDateText.setText("");
-                    gList.setDueDate(null);
-                }
-            }
-        });
-
-        dateDialog.show();
     }
 
     @Override

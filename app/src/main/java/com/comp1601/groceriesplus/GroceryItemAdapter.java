@@ -46,8 +46,8 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
         private LinearLayout mExpireRow;
         private LinearLayout mRestockRow;
 
-        private TextView mExpiryDateText;
-        private TextView mRestockDateText;
+        private EditText mExpiryDateEditText;
+        private EditText mRestockDateEditText;
 
         private View parentView;
 
@@ -66,8 +66,8 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
             this.mExpireRow = view.findViewById(R.id.expireRow);
             this.mRestockRow = view.findViewById(R.id.restockRow);
 
-            this.mExpiryDateText = view.findViewById(R.id.expiryDateText);
-            this.mRestockDateText = view.findViewById(R.id.restockDateText);
+            this.mExpiryDateEditText = view.findViewById(R.id.expiryDateEditText);
+            this.mRestockDateEditText = view.findViewById(R.id.restockDateEditText);
         }
     }
 
@@ -105,37 +105,28 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
 
         String expDate = groceryItem.getExpiryDate() != null ?
                 ToolBox.dateToUiString(groceryItem.getExpiryDate()) : "";
-        holder.mExpiryDateText.setText(expDate);
+        holder.mExpiryDateEditText.setText(expDate);
 
         String resDate = groceryItem.getRestockDate() != null ?
                 ToolBox.dateToUiString(groceryItem.getRestockDate()) : "";
-        holder.mRestockDateText.setText(resDate);
-
-        //disable view if glist is inactive
-        holder.mFoundCheckBox.setEnabled(gList.isActive());
-        holder.mItemNameEditText.setEnabled(gList.isActive());
-        holder.mQuantityEditText.setEnabled(gList.isActive());
-        holder.mExpiryDateText.setEnabled(gList.isActive());
-        holder.mExpireRow.setEnabled(gList.isActive());
-        holder.mRestockDateText.setEnabled(gList.isActive());
-        holder.mRestockRow.setEnabled(gList.isActive());
-        holder.mDeleteItemButton.setEnabled(gList.isActive());
+        holder.mRestockDateEditText.setText(resDate);
 
 
         //handlers
-        holder.mExpireRow.setOnClickListener(v -> {
-            handleDatePicker(mContext, holder.mExpiryDateText, gList.getItem(holder.getAdapterPosition()), AdapterInputType.EXPIRY);
-        });
-        holder.mRestockRow.setOnClickListener(v -> {
-            handleDatePicker(mContext, holder.mRestockDateText, gList.getItem(holder.getAdapterPosition()), AdapterInputType.RESTOCK);
-        });
-
         holder.mItemNameEditText.addTextChangedListener(
             makeTextWatcher(gList.getItem(holder.getAdapterPosition()), holder.mItemNameEditText, AdapterInputType.NAME)
         );
 
         holder.mQuantityEditText.addTextChangedListener(
             makeTextWatcher(gList.getItem(holder.getAdapterPosition()), holder.mQuantityEditText, AdapterInputType.QUANTITY)
+        );
+
+        holder.mExpiryDateEditText.addTextChangedListener(
+            makeTextWatcher(gList.getItem(holder.getAdapterPosition()), holder.mExpiryDateEditText, AdapterInputType.EXPIRY)
+        );
+
+        holder.mRestockDateEditText.addTextChangedListener(
+            makeTextWatcher(gList.getItem(holder.getAdapterPosition()), holder.mRestockDateEditText, AdapterInputType.RESTOCK)
         );
 
         holder.mDeleteItemButton.setOnClickListener(view -> {
@@ -162,55 +153,6 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
         return this.gList.getTotalItemCount();
     }
 
-    public void handleDatePicker(Context context, TextView textView, GroceryItem groceryItem, AdapterInputType inputType) {
-        final Calendar myCalendar = Calendar.getInstance();
-
-        if (groceryItem.getExpiryDate() != null && inputType == AdapterInputType.EXPIRY) {
-            myCalendar.setTime(groceryItem.getExpiryDate());
-        }
-        else if (groceryItem.getRestockDate() != null && inputType == AdapterInputType.RESTOCK) {
-            myCalendar.setTime(groceryItem.getRestockDate());
-        }
-
-        DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-            //format date
-            String pickedDate = ToolBox.dateToUiString(myCalendar.getTime());
-            textView.setText(pickedDate);
-
-            if (inputType == AdapterInputType.EXPIRY) {
-                groceryItem.setExpiryDate(myCalendar.getTime());
-            }
-            else if (inputType == AdapterInputType.RESTOCK) {
-                groceryItem.setRestockDate(myCalendar.getTime());
-            }
-
-        };
-
-        DatePickerDialog dateDialog = new DatePickerDialog(context, date, myCalendar
-                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH));
-
-        dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE, mContext.getString(R.string.clearDate), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_NEGATIVE) {
-                    textView.setText("");
-                    if (inputType == AdapterInputType.EXPIRY) {
-                        groceryItem.setExpiryDate(null);
-                    }
-                    else if (inputType == AdapterInputType.RESTOCK) {
-                        groceryItem.setRestockDate(null);
-                    }
-                }
-            }
-        });
-
-        dateDialog.show();
-    }
-
     public TextWatcher makeTextWatcher(GroceryItem groceryItem, EditText editText, AdapterInputType inputType) {
         return new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -222,6 +164,22 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
                 else if (inputType == AdapterInputType.QUANTITY) {
                     if (!text.equals("")) {
                         groceryItem.setQuantity(Integer.parseInt(text));
+                    }
+                }
+                else if (inputType == AdapterInputType.EXPIRY) {
+                    if (!text.equals("")) {
+                        groceryItem.setExpiryDate(ToolBox.uiStringToDate(text));
+                    }
+                    else {
+                        groceryItem.setExpiryDate(null);
+                    }
+                }
+                else if (inputType == AdapterInputType.RESTOCK) {
+                    if (!text.equals("")) {
+                        groceryItem.setRestockDate(ToolBox.uiStringToDate(text));
+                    }
+                    else {
+                        groceryItem.setRestockDate(null);
                     }
                 }
             }

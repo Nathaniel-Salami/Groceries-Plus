@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton mAddListButton;
 
+
     //for swipe to delete in recycler view
     ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         //launch recycler view
         loadRecyclerView();
         new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
+
 
         // handlers
         mAddListButton.setOnClickListener(view -> {
@@ -109,11 +111,7 @@ public class MainActivity extends AppCompatActivity {
         model.removeGroceryList(position);
 
         //regular notify
-        //mGLAdapter.notifyItemRemoved(position);
         mGLAdapter.notifyDataSetChanged();
-
-        //reload recycler view
-        //loadRecyclerView();
     }
 
     @Override
@@ -124,17 +122,16 @@ public class MainActivity extends AppCompatActivity {
         //grab model and launch recycler view
         model.setGListArrayList(db.selectAllGroceryList());
         loadRecyclerView();
-        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(mRecyclerView);
 
         mGLAdapter.notifyDataSetChanged();
     }
 
     //setting button
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

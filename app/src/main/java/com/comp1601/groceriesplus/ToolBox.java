@@ -14,7 +14,7 @@ import java.util.Date;
 public class ToolBox {
 
     public static final String DATE_FORMAT_DB = "dd/MM/yyyy HH:mm:ss";
-    public static final String DATE_FORMAT_UI = "E, MMM dd ";
+    public static final String DATE_FORMAT_UI = "dd/MM/yyyy";
 
     static final String GLIST_EXTRA = "glist";
     static final String MODEL_EXTRA = "gModel";
